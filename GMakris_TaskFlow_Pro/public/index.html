@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="images/app-logo.png">
+</head>
+<body>
+
+<div id="toast"></div>
+
+<div class="container">
+
+    <!-- PROFILE -->
+
+    <div class="profile-card">
+
+        <div class="profile-left">
+
+            <img
+                id="avatarPreview"
+                src="https://ui-avatars.com/api/?name=User&background=667eea&color=fff"
+                alt="Avatar"
+            >
+
+            <div>
+
+                <h2 id="welcome">
+                    Welcome
+                </h2>
+
+                <p id="userBio">
+                    No bio set
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="top-actions">
+
+            <button
+                id="themeBtn"
+                class="icon-btn"
+            >
+                🌙
+            </button>
+
+            <button
+                onclick="editProfile()"
+                class="profile-btn"
+            >
+                Profile
+            </button>
+
+            <button
+                onclick="logout()"
+                class="logout-btn"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+        <div class="stat-box">
+            <h3 id="totalTasks">0</h3>
+            <p>Total Tasks</p>
+        </div>
+
+        <div class="stat-box">
+            <h3 id="completedTasks">0</h3>
+            <p>Completed</p>
+        </div>
+
+        <div class="stat-box">
+            <h3 id="highPriorityTasks">0</h3>
+            <p>High Priority</p>
+        </div>
+
+        <div class="stat-box">
+            <h3 id="todoCount">0</h3>
+            <p>To Do</p>
+        </div>
+
+        <div class="stat-box">
+            <h3 id="doingCount">0</h3>
+            <p>Doing</p>
+        </div>
+
+        <div class="stat-box">
+            <h3 id="doneCount">0</h3>
+            <p>Done</p>
+        </div>
+
+    </div>
+
+    <!-- TOOLBAR -->
+
+    <div class="toolbar">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="🔍 Search tasks..."
+        >
+
+        <select id="filterPriority">
+
+            <option value="">
+                All Priorities
+            </option>
+
+            <option value="high">
+                High
+            </option>
+
+            <option value="medium">
+                Medium
+            </option>
+
+            <option value="low">
+                Low
+            </option>
+
+        </select>
+
+    </div>
+
+    <!-- CREATE TASK -->
+
+    <div class="task-form">
+
+        <input
+            type="text"
+            id="taskInput"
+            placeholder="Task title..."
+        >
+
+        <select id="priority">
+
+            <option value="low">
+                Low
+            </option>
+
+            <option value="medium" selected>
+                Medium
+            </option>
+
+            <option value="high">
+                High
+            </option>
+
+        </select>
+
+        <input
+            type="text"
+            id="category"
+            placeholder="Category"
+        >
+
+        <input
+            type="date"
+            id="dueDate"
+        >
+
+        <select id="status">
+
+            <option value="todo">
+                To Do
+            </option>
+
+            <option value="doing">
+                Doing
+            </option>
+
+            <option value="done">
+                Done
+            </option>
+
+        </select>
+
+        <button
+            onclick="addTask()"
+            class="add-btn"
+        >
+            Add Task
+        </button>
+
+    </div>
+
+    <!-- KANBAN BOARD -->
+
+    <div class="kanban">
+
+        <!-- TODO -->
+
+        <div class="kanban-column">
+
+            <div class="kanban-header todo-header">
+
+                📋 To Do
+
+            </div>
+
+            <div
+                id="todoColumn"
+                class="task-column"
+            >
+            </div>
+
+        </div>
+
+        <!-- DOING -->
+
+        <div class="kanban-column">
+
+            <div class="kanban-header doing-header">
+
+                ⚡ Doing
+
+            </div>
+
+            <div
+                id="doingColumn"
+                class="task-column"
+            >
+            </div>
+
+        </div>
+
+        <!-- DONE -->
+
+        <div class="kanban-column">
+
+            <div class="kanban-header done-header">
+
+                ✅ Done
+
+            </div>
+
+            <div
+                id="doneColumn"
+                class="task-column"
+            >
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+
+    <div class="bottom-actions">
+
+        <button
+            onclick="clearCompleted()"
+            class="clear-btn"
+        >
+            Clear Completed
+        </button>
+
+    </div>
+
+</div>
+
+<script src="app.js"></script>
+
+<!-- CUSTOM MODAL -->
+
+<div id="modalOverlay" class="modal-overlay">
+
+    <div class="modal">
+
+        <h2 id="modalTitle">
+            Confirm
+        </h2>
+
+        <p id="modalMessage">
+            Are you sure?
+        </p>
+
+        <div
+            id="modalInputs"
+            class="modal-inputs"
+        >
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                id="cancelBtn"
+                class="secondary-btn"
+            >
+                Cancel
+            </button>
+
+            <button
+                id="confirmBtn"
+                class="primary-btn"
+            >
+                Confirm
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<footer class="site-footer">
+
+    Created by:
+    <a
+        href="https://www.linkedin.com/in/grigorios-makris-b1b760274/"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        Grigorios K. Makris
+    </a>
+
+    | Faculty Number: 423325012
+
+    | Program: Master's Degree
+
+    | Institution:
+    <a
+        href="https://tu-sofia.bg/"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        Technical University of Sofia
+    </a>
+
+</footer>
+
+</body>
+</html>

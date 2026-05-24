@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TaskFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="images/app-logo.png">
+</head>
+<body>
+
+<div id="toast"></div>
+
+<div class="auth-container">
+
+    <div class="auth-card">
+
+        <div class="auth-header">
+
+            <div class="logo-title">
+
+                <img
+                    src="images/app-logo.png"
+                    alt="TaskFlow Logo"
+                    class="app-logo"
+                >
+
+                <h1>TaskFlow</h1>
+
+            </div>
+
+            <p>
+                Welcome back! Sign in to continue.
+            </p>
+
+        </div>
+
+        <div class="auth-form">
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Username"
+                autocomplete="username"
+            >
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                autocomplete="current-password"
+            >
+
+            <button
+                class="auth-btn"
+                onclick="login()"
+            >
+                Login
+            </button>
+
+        </div>
+
+        <div class="auth-footer">
+
+            Don't have an account?
+
+            <a href="register.html">
+                Create one
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const usernameInput =
+    document.getElementById("username");
+
+const passwordInput =
+    document.getElementById("password");
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 3000);
+}
+
+async function login() {
+
+    const username =
+        usernameInput.value.trim();
+
+    const password =
+        passwordInput.value;
+
+    if (!username || !password) {
+
+        showToast(
+            "Please fill all fields"
+        );
+
+        return;
+    }
+
+    try {
+
+        const res =
+            await fetch("/login", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body: JSON.stringify({
+                    username,
+                    password
+                })
+            });
+
+        const data =
+            await res.json();
+
+        if (!res.ok) {
+
+            showToast(
+                data.error ||
+                "Login failed"
+            );
+
+            return;
+        }
+
+        showToast(
+            "Login successful"
+        );
+
+        setTimeout(() => {
+
+            location.href = "/";
+
+        }, 700);
+
+    } catch {
+
+        showToast(
+            "Server unavailable"
+        );
+    }
+}
+
+passwordInput.addEventListener(
+    "keypress",
+    e => {
+
+        if (e.key === "Enter") {
+
+            login();
+        }
+    }
+);
+
+usernameInput.addEventListener(
+    "keypress",
+    e => {
+
+        if (e.key === "Enter") {
+
+            login();
+        }
+    }
+);
+
+</script>
+<footer class="site-footer">
+
+    Created by:
+    <a
+        href="https://www.linkedin.com/in/grigorios-makris-b1b760274/"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        Grigorios K. Makris
+    </a>
+
+    | Faculty Number: 423325012
+
+    | Program: Master's Degree
+
+    | Institution:
+    <a
+        href="https://tu-sofia.bg/"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        Technical University of Sofia
+    </a>
+
+</footer>
+
+</body>
+</html>
